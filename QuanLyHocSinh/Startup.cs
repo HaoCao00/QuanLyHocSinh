@@ -37,6 +37,9 @@ namespace QuanLyHocSinh
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "QuanLyHocSinh", Version = "v1" });
             });
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContextFactory<QuanLyHocSinhContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyConnection"), o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
@@ -60,9 +63,15 @@ namespace QuanLyHocSinh
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuanLyHocSinh v1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuanLyHocSinh v1"));
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuanLyTKB v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 

@@ -14,5 +14,10 @@ namespace QuanLyHocSinh.Services.Interface
         {
             _contextFactory = context;
         }
+        public override async Task<List<Student>> GetAllAsync()
+        {
+            var context = _contextFactory.CreateDbContext();
+            return await context.Students.Include(x=>x.ClassNavigation).ToListAsync();
+        }
     }
 }
