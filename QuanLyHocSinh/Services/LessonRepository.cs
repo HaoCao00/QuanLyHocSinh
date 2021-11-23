@@ -14,6 +14,6 @@ namespace QuanLyHocSinh.Services
         public LessonRepository(IDbContextFactory<QuanLyHocSinhContext> context) : base(context)
         {
             _contextFactory = context;
-        }
+        } 
     }
 }

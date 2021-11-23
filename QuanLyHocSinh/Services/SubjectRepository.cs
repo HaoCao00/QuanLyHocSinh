@@ -16,5 +16,6 @@ namespace QuanLyHocSinh.Services
         {
             _contextFactory = context;
         }
+       
     }
 }

@@ -43,6 +43,32 @@ namespace QuanLyHocSinh.Controllers
             return ScheduleDetail;
         }
 
+        [HttpGet("ScheduleByClassId/{classid}")]
+        public async Task<ActionResult<List<ScheduleDetail>>> GetScheduleByClassId(int classid)
+        {
+            var ScheduleDetail = await _ScheduleDetailRepository.GetScheduleByClassId(classid);
+
+            if (ScheduleDetail == null)
+            {
+                return NotFound();
+            }
+
+            return ScheduleDetail;
+        }
+
+        [HttpGet("scheduleDetailByDate/{studyDate}")]
+        public async Task<ActionResult<List<ScheduleDetail>>> GetScheduleByClassId(string studyDate)
+        {
+            var ScheduleDetail = await _ScheduleDetailRepository.GetScheduleByDate(studyDate);
+
+            if (ScheduleDetail == null)
+            {
+                return NotFound();
+            }
+
+            return ScheduleDetail;
+        }
+
         // PUT: api/ScheduleDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -18,6 +18,8 @@ namespace QuanLyHocSinh.Models
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<TestType> testTypes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<NewsFeed> NewsFeeds { get; set; }
         public QuanLyHocSinhContext(DbContextOptions<QuanLyHocSinhContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,14 +62,16 @@ namespace QuanLyHocSinh.Models
             });
             modelBuilder.Entity<Schedule>(e =>
             {
+                e.Property(e => e.ClassId).IsRequired(true);
                 e.HasKey(e => e.Id);
                 e.Property(e => e.CreateAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 e.Property(e => e.Week).IsRequired(true);
+                e.HasOne(c => c.ClassNavigation)
+                    .WithMany(c => c.Schedules)
+                    .HasForeignKey(e => e.ClassId)
+                    .HasConstraintName("fk_Schedule_Class");
 
-
-
-
-            });
+            }); 
             modelBuilder.Entity<ScheduleDetail>(e =>
             {
                 e.HasKey(e => new
@@ -76,9 +80,17 @@ namespace QuanLyHocSinh.Models
                     e.ScheduleId,
                     e.SubjectId
                 });
+                e.Property(e => e.LessonId).IsRequired(true);
+                e.Property(e => e.ScheduleId).IsRequired(true);
+                e.Property(e => e.SubjectId).IsRequired(true);
                 e.HasOne(b => b.LessonNavigation).WithMany(ac => ac.ScheduleDetails).HasForeignKey(b => b.LessonId).HasConstraintName("FK_ScheduleDetail_Lesson");
                 e.HasOne(b => b.ScheduleNavigation).WithMany(ac => ac.ScheduleDetails).HasForeignKey(b => b.ScheduleId).HasConstraintName("FK_ScheduleDetail_Schedule");
-                e.HasOne(b => b.SubjectNavigation).WithMany(ac => ac.ScheduleDetails).HasForeignKey(b => b.SubjectId).HasConstraintName("FK_ScheduleDetail_Subject");
+                //e.HasOne(b => b.SubjectNavigation).WithMany(ac => ac.ScheduleDetails).HasForeignKey(b => b.SubjectId);
+                e.HasOne(c => c.SubjectNavigation)
+                   .WithMany(c => c.ScheduleDetails)
+                   .HasForeignKey(e => e.SubjectId)
+                   .OnDelete(DeleteBehavior.Restrict)
+                   .HasConstraintName("fk_ScheduleDetail_Class");
 
 
             });
@@ -117,6 +129,26 @@ namespace QuanLyHocSinh.Models
             {
                 entity.HasKey(e => e.Id)
                     .HasName("pk_testType");
+            });
+            modelBuilder.Entity<NewsFeed>(entity =>
+            {
+                entity.HasKey(e => e.Id)
+                    .HasName("pk_newFeed");
+            });
+
+            modelBuilder.Entity<Comment>(e =>
+            { 
+                e.HasKey(e => new{e.NewsFeedId, e.StudentId, e.CreatedAt});
+                e.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP"); 
+                e.HasOne(c => c.NewsFeedNavigation)
+                    .WithMany(c => c.Comments)
+                    .HasForeignKey(e => e.NewsFeedId)
+                    .HasConstraintName("fk_newFeed_Comment");
+                e.HasOne(c => c.StudentNavigation)
+                    .WithMany(c => c.Comments)
+                    .HasForeignKey(e => e.StudentId)
+                    .HasConstraintName("fk_newFeed_Student");
+
             });
 
             base.OnModelCreating(modelBuilder);

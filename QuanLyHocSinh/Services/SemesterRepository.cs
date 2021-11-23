@@ -15,6 +15,6 @@ namespace QuanLyHocSinh.Services
         public SemesterRepository(IDbContextFactory<QuanLyHocSinhContext> context) : base(context)
         {
             _contextFactory = context;
-        }
+        } 
     }
 }

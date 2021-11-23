@@ -8,5 +8,6 @@ namespace QuanLyHocSinh.Services.Interface
 {
     public interface IStudentRepository:IBaseRepository<Student>
     {
+        Task<List<Student>> GetStudentByClassId(int classId);
     }
 }

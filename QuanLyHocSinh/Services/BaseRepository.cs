@@ -47,7 +47,7 @@ namespace QuanLyHocSinh.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             var context = _contextFactory.CreateDbContext();
             _dbset = context.Set<T>();

@@ -8,7 +8,7 @@ namespace QuanLyHocSinh.Models
     public class Lesson
     {
         public int Id { get; set; }
-        public DateTime TimeStart { get; set; }
+        public string TimeStart { get; set; }
         public virtual ICollection<ScheduleDetail> ScheduleDetails { get; set; }
         public Lesson()
         {

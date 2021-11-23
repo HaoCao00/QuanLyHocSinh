@@ -11,6 +11,7 @@ namespace QuanLyHocSinh.Models
         public int Week { get; set; }
         public DateTime CreateAt { get; set; }
         public int ClassId { get; set; }
+        public virtual Class ClassNavigation { get; set; }
         public virtual ICollection<ScheduleDetail> ScheduleDetails { get; set; }
         public Schedule()
         {

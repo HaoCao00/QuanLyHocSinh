@@ -42,6 +42,19 @@ namespace QuanLyHocSinh.Controllers
 
             return Student;
         }
+         
+        [HttpGet("studentByClassId/{classId}")]
+        public async Task<ActionResult<List<Student>>> GetStudentByClassId(int classId)
+        {
+            var Students = await _StudentRepository.GetStudentByClassId(classId);
+
+            if (Students == null)
+            {
+                return NotFound();
+            }
+
+            return Students;
+        }
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

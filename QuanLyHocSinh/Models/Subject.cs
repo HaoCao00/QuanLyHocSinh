@@ -16,8 +16,8 @@ namespace QuanLyHocSinh.Models
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public ICollection<Score> Scores { get; set; }
-        public ICollection<Teacher> Teachers { get; set; }
-        public ICollection<ScheduleDetail> ScheduleDetails { get; set; }
+        public  virtual ICollection<Score> Scores { get; set; }
+        public  virtual ICollection<Teacher> Teachers { get; set; }
+        public virtual ICollection<ScheduleDetail> ScheduleDetails { get; set; }
     }
 }

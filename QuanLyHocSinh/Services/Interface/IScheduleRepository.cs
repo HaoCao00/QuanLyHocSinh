@@ -8,5 +8,6 @@ namespace QuanLyHocSinh.Services.Interface
 {
     public interface IScheduleRepository:IBaseRepository<Schedule>
     {
+        
     }
 }

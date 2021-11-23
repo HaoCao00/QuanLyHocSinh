@@ -8,5 +8,6 @@ namespace QuanLyHocSinh.Services.Interface
 {
     public interface IScoreRepository:IBaseRepository<Score>
     {
+        Task<List<Score>> GetScoresByStudentAndSemester(Guid studentId, int semesterId);
     }
 }

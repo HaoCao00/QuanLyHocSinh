@@ -43,6 +43,19 @@ namespace QuanLyHocSinh.Controllers
             return score;
         }
 
+        [HttpGet("ScoresByStudentAndSemester/{studentId}/{semesterId}")]
+        public async Task<ActionResult<List<Score>>> GetScore(Guid studentId, int semesterId)
+        {
+            var scores = await _scoreRepository.GetScoresByStudentAndSemester(studentId, semesterId);
+
+            if (scores == null)
+            {
+                return NotFound();
+            }
+
+            return scores;
+        }
+
         // PUT: api/Scores/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

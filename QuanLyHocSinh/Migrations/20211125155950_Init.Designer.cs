@@ -10,7 +10,7 @@ using QuanLyHocSinh.Models;
 namespace QuanLyHocSinh.Migrations
 {
     [DbContext(typeof(QuanLyHocSinhContext))]
-    [Migration("20211123025619_Init")]
+    [Migration("20211125155950_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,29 @@ namespace QuanLyHocSinh.Migrations
                     b.ToTable("Classes");
                 });
 
+            modelBuilder.Entity("QuanLyHocSinh.Models.Comment", b =>
+                {
+                    b.Property<int>("NewsFeedId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NewsFeedId", "StudentId", "CreatedAt");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("QuanLyHocSinh.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")
@@ -55,12 +78,38 @@ namespace QuanLyHocSinh.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("TimeStart")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TimeStart")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("QuanLyHocSinh.Models.NewsFeed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id")
+                        .HasName("pk_newFeed");
+
+                    b.ToTable("NewsFeeds");
                 });
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Schedule", b =>
@@ -82,6 +131,8 @@ namespace QuanLyHocSinh.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
 
                     b.ToTable("Schedules");
                 });
@@ -145,11 +196,11 @@ namespace QuanLyHocSinh.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("TimeEnd")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TimeEnd")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimeStart")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TimeStart")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("pk_semester");
@@ -297,6 +348,39 @@ namespace QuanLyHocSinh.Migrations
                     b.Navigation("TeacherNavigation");
                 });
 
+            modelBuilder.Entity("QuanLyHocSinh.Models.Comment", b =>
+                {
+                    b.HasOne("QuanLyHocSinh.Models.NewsFeed", "NewsFeedNavigation")
+                        .WithMany("Comments")
+                        .HasForeignKey("NewsFeedId")
+                        .HasConstraintName("fk_newFeed_Comment")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuanLyHocSinh.Models.Student", "StudentNavigation")
+                        .WithMany("Comments")
+                        .HasForeignKey("StudentId")
+                        .HasConstraintName("fk_newFeed_Student")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NewsFeedNavigation");
+
+                    b.Navigation("StudentNavigation");
+                });
+
+            modelBuilder.Entity("QuanLyHocSinh.Models.Schedule", b =>
+                {
+                    b.HasOne("QuanLyHocSinh.Models.Class", "ClassNavigation")
+                        .WithMany("Schedules")
+                        .HasForeignKey("ClassId")
+                        .HasConstraintName("fk_Schedule_Class")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassNavigation");
+                });
+
             modelBuilder.Entity("QuanLyHocSinh.Models.ScheduleDetail", b =>
                 {
                     b.HasOne("QuanLyHocSinh.Models.Lesson", "LessonNavigation")
@@ -316,8 +400,8 @@ namespace QuanLyHocSinh.Migrations
                     b.HasOne("QuanLyHocSinh.Models.Subject", "SubjectNavigation")
                         .WithMany("ScheduleDetails")
                         .HasForeignKey("SubjectId")
-                        .HasConstraintName("FK_ScheduleDetail_Subject")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_ScheduleDetail_Class")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("LessonNavigation");
@@ -383,12 +467,19 @@ namespace QuanLyHocSinh.Migrations
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Class", b =>
                 {
+                    b.Navigation("Schedules");
+
                     b.Navigation("Students");
                 });
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Lesson", b =>
                 {
                     b.Navigation("ScheduleDetails");
+                });
+
+            modelBuilder.Entity("QuanLyHocSinh.Models.NewsFeed", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Schedule", b =>
@@ -399,6 +490,11 @@ namespace QuanLyHocSinh.Migrations
             modelBuilder.Entity("QuanLyHocSinh.Models.Semester", b =>
                 {
                     b.Navigation("Scores");
+                });
+
+            modelBuilder.Entity("QuanLyHocSinh.Models.Student", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Subject", b =>
