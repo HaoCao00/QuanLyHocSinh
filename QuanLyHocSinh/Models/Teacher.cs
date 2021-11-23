@@ -14,6 +14,8 @@ namespace QuanLyHocSinh.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Image { get; set; }
+        public int SubjectId { get; set; }
+        public virtual Subject SubjectNavigation { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
         public Teacher()
         {
