@@ -13,9 +13,11 @@ namespace QuanLyHocSinh.Models
         public Guid TeacherId { get; set; }
         public virtual Teacher TeacherNavigation { get; set; }
         public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
         public Class()
         {
             Students = new HashSet<Student>();
+            Schedules = new HashSet<Schedule>();
         }
 
     }

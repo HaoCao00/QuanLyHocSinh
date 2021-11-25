@@ -51,23 +51,24 @@
             {
               "kind": "v12.0",
               "location": "[parameters('resourceLocation')]",
-              "name": "quanlyhocsinhdbserver",
+              "name": "doankhamdbserver",
               "type": "Microsoft.Sql/servers",
               "apiVersion": "2017-10-01-preview"
             },
             {
               "sku": {
-                "name": "Standard",
-                "tier": "Standard",
-                "capacity": 10
+                "name": "GP_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
               },
-              "kind": "v12.0,user",
+              "kind": "v12.0,user,vcore",
               "location": "[parameters('resourceLocation')]",
-              "name": "quanlyhocsinhdbserver/QuanLyHocSinh_db",
+              "name": "doankhamdbserver/QuanLyHocSinh_db",
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2017-10-01-preview",
               "dependsOn": [
-                "quanlyhocsinhdbserver"
+                "doankhamdbserver"
               ]
             }
           ]

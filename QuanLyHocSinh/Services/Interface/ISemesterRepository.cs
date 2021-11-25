@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Services.Interface
 {
-    public interface IStudentRepository:IBaseRepository<Student>
+    public interface ISemesterRepository : IBaseRepository<Semester>
     {
-        Task<List<Student>> GetStudentByClassId(int classId);
     }
 }

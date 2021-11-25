@@ -1,27 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
-using QuanLyHocSinh.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using QuanLyHocSinh.Services.Interface;
 namespace QuanLyHocSinh.Services
 {
-    public class ClassRepository:BaseRepository<Class>, IClassRepository
+    public class ScheduleRepository:BaseRepository<Schedule>, IScheduleRepository
     {
         private IDbContextFactory<QuanLyHocSinhContext> _contextFactory;
-        public ClassRepository(IDbContextFactory<QuanLyHocSinhContext> context) : base(context)
+        public ScheduleRepository(IDbContextFactory<QuanLyHocSinhContext> context) : base(context)
         {
             _contextFactory = context;
         }
-        public override async Task<List<Class>> GetAllAsync()
+        public override async Task<List<Schedule>> GetAllAsync()
         {
             var context = _contextFactory.CreateDbContext();
-            return await context.Classes
-                .Include(x => x.TeacherNavigation)
+            return await context.Schedules 
+                .Include(x => x.ClassNavigation)
                 .AsNoTracking()
                 .ToListAsync();
         }
+         
     }
 }

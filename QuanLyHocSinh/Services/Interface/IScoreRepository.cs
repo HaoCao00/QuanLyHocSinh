@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Services.Interface
 {
-    public interface IStudentRepository:IBaseRepository<Student>
+    public interface IScoreRepository:IBaseRepository<Score>
     {
-        Task<List<Student>> GetStudentByClassId(int classId);
+        Task<List<Score>> GetScoresByStudentAndSemester(Guid studentId, int semesterId);
     }
 }
