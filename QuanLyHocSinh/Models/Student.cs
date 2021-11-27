@@ -22,6 +22,9 @@ namespace QuanLyHocSinh.Models
         public string PhoneNumberParent { get; set; }
         public string CMND { get; set; }
         public string PlaceOfIssue { get; set; }
+        public string Nationality { get; set; }
+        public string Folk { get; set; }
+        public string Religion { get; set; }
         public DateTime DateOfIssue { get; set; }
         public int ClassId { get; set; }
         public virtual Class ClassNavigation { get; set; }

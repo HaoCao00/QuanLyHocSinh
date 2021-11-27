@@ -11,7 +11,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SchedulesController : ControllerBase
+    public class SchedulesController : BaseController
     {
         private readonly IScheduleRepository _ScheduleRepository;
 

@@ -13,7 +13,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ScoresController : ControllerBase
+    public class ScoresController : BaseController
     {
         private readonly IScoreRepository _scoreRepository;
 

@@ -13,7 +13,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubjectsController : ControllerBase
+    public class SubjectsController : BaseController
     {
         private readonly ISubjectRepository _subjectRepository;
 

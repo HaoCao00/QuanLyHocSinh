@@ -20,6 +20,7 @@ namespace QuanLyHocSinh.Models
         public DbSet<TestType> testTypes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<NewsFeed> NewsFeeds { get; set; }
+        public  DbSet<Account>  Accounts { get; set; }
         public QuanLyHocSinhContext(DbContextOptions<QuanLyHocSinhContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -150,6 +151,10 @@ namespace QuanLyHocSinh.Models
                     .HasConstraintName("fk_newFeed_Student");
 
             });
+            modelBuilder.Entity<Account>(e =>
+            {
+                e.HasKey(e => e.Id);  
+            }); 
 
             base.OnModelCreating(modelBuilder);
         }

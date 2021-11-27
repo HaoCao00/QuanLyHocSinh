@@ -12,7 +12,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsFeedController : ControllerBase
+    public class NewsFeedController : BaseController
     {
         private readonly INewsFeedRepository _newsFeedRepository;
 

@@ -13,27 +13,30 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentsController : BaseController
     {
-        private readonly IStudentRepository _StudentRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly ILoginRepository _loginRepository;
 
-        public StudentsController(IStudentRepository StudentRepository)
+
+        public StudentsController(IStudentRepository studentRepository, ILoginRepository loginRepository)
         {
-            _StudentRepository = StudentRepository;
+            _studentRepository = studentRepository;
+            _loginRepository = loginRepository;
         }
 
         // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-            return await _StudentRepository.GetAllAsync();
+            return await _studentRepository.GetAllAsync();
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
-            var Student = await _StudentRepository.GetByIdAsync(id);
+            var Student = await _studentRepository.GetByIdAsync(id);
 
             if (Student == null)
             {
@@ -46,7 +49,7 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet("studentByClassId/{classId}")]
         public async Task<ActionResult<List<Student>>> GetStudentByClassId(int classId)
         {
-            var Students = await _StudentRepository.GetStudentByClassId(classId);
+            var Students = await _studentRepository.GetStudentByClassId(classId);
 
             if (Students == null)
             {
@@ -68,7 +71,7 @@ namespace QuanLyHocSinh.Controllers
 
             try
             {
-                await _StudentRepository.UpdateAsync(Student);
+                await _studentRepository.UpdateAsync(Student);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,18 +84,21 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student Student)
+        public async Task<ActionResult<Student>> PostStudent(Student student, string username, string password)
         {
-            await _StudentRepository.AddAsync(Student);
+            var user = await _loginRepository.AddAsync(new Account()
+                {UserName = username, Password = password, Role = "student"});
+            student.Id = user.Id;
+            await _studentRepository.AddAsync(student);
 
-            return CreatedAtAction("GetStudent", new { id = Student.Id }, Student);
+            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            await _StudentRepository.DeleteAsync(id);
+            await _studentRepository.DeleteAsync(id);
 
             return NoContent();
         }

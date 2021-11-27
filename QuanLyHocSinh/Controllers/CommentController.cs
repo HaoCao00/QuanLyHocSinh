@@ -13,7 +13,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentController : BaseController
     {
         private readonly ICommentRepository _commentRepository;
 

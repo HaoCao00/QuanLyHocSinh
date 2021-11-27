@@ -11,7 +11,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LessonsController : ControllerBase
+    public class LessonsController : BaseController
     {
         private readonly ILessonRepository _LessonRepository;
 

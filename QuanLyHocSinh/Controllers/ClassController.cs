@@ -6,14 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ClasssController : ControllerBase
+    [ApiController] 
+    public class ClasssController : BaseController
     {
         private readonly IClassRepository _ClassRepository;
 

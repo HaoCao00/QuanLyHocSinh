@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-//using QuanLyHocSinh.Data;
+using Microsoft.EntityFrameworkCore; 
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 
@@ -13,7 +12,7 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestTypesController : ControllerBase
+    public class TestTypesController : BaseController
     {
         private readonly ITestTypeRepository _testTypeRepository;
 

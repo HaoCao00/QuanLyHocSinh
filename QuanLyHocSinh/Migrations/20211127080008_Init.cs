@@ -8,6 +8,20 @@ namespace QuanLyHocSinh.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Lessons",
                 columns: table => new
                 {
@@ -88,7 +102,12 @@ namespace QuanLyHocSinh.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SubjectId = table.Column<int>(type: "int", nullable: false)
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    CMND = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlaceOfIssue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Folk = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Religion = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,6 +211,9 @@ namespace QuanLyHocSinh.Migrations
                     PhoneNumberParent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CMND = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlaceOfIssue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Folk = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Religion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfIssue = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -311,6 +333,9 @@ namespace QuanLyHocSinh.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
             migrationBuilder.DropTable(
                 name: "Comments");
 

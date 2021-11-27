@@ -32,9 +32,9 @@ namespace QuanLyHocSinh.Services
             var context = _contextFactory.CreateDbContext();
 
             return await context.Comments
-                .Include(x => x.NewsFeedNavigation)
                 .Include(x => x.StudentNavigation)
                 .Where(x=>x.NewsFeedId == newsFeedId)
+                .OrderByDescending(x=>x.CreatedAt)
                 .AsNoTracking()
                 .ToListAsync();
         }

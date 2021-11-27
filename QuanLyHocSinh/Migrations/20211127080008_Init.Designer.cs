@@ -10,7 +10,7 @@ using QuanLyHocSinh.Models;
 namespace QuanLyHocSinh.Migrations
 {
     [DbContext(typeof(QuanLyHocSinhContext))]
-    [Migration("20211125155950_Init")]
+    [Migration("20211127080008_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,28 @@ namespace QuanLyHocSinh.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("QuanLyHocSinh.Models.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+                });
 
             modelBuilder.Entity("QuanLyHocSinh.Models.Class", b =>
                 {
@@ -231,6 +253,9 @@ namespace QuanLyHocSinh.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Folk")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -242,6 +267,9 @@ namespace QuanLyHocSinh.Migrations
                     b.Property<string>("NameParent")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -250,6 +278,9 @@ namespace QuanLyHocSinh.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PlaceOfIssue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Religion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Sex")
@@ -289,7 +320,13 @@ namespace QuanLyHocSinh.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("CMND")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Folk")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
@@ -300,9 +337,18 @@ namespace QuanLyHocSinh.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("PlaceOfIssue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Religion")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Sex")
                         .HasColumnType("bit");

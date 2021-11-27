@@ -15,5 +15,12 @@ namespace QuanLyHocSinh.Services
         {
             _contextFactory = context;
         }
+
+        public override async Task<List<NewsFeed>> GetAllAsync()
+        {
+            var context = _contextFactory.CreateDbContext();
+            return await context.NewsFeeds.OrderByDescending(x => x.CreateAt)
+                .ToListAsync();
+        }
     }
 }

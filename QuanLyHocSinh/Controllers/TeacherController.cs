@@ -13,13 +13,16 @@ namespace QuanLyHocSinh.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeachersController : ControllerBase
+    public class TeachersController : BaseController
     {
         private readonly ITeacherRepository _TeacherRepository;
 
-        public TeachersController(ITeacherRepository TeacherRepository)
+        private readonly ILoginRepository _loginRepository;
+
+        public TeachersController(ITeacherRepository TeacherRepository, ILoginRepository loginRepository)
         {
             _TeacherRepository = TeacherRepository;
+            _loginRepository = loginRepository;
         }
 
         // GET: api/Teachers
@@ -68,11 +71,14 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/Teachers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(Teacher Teacher)
+        public async Task<ActionResult<Teacher>> PostTeacher(Teacher teacher, string username, string password)
         {
-            await _TeacherRepository.AddAsync(Teacher);
+            var account = await _loginRepository.AddAsync(new Account()
+                {UserName = username, Password = password, Role = "teacher"});
+            teacher.Id = account.Id;
+            await _TeacherRepository.AddAsync(teacher);
 
-            return CreatedAtAction("GetTeacher", new { id = Teacher.Id }, Teacher);
+            return CreatedAtAction("GetTeacher", new { id = teacher.Id }, teacher);
         }
 
         // DELETE: api/Teachers/5
