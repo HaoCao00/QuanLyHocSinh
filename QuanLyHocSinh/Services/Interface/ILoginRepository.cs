@@ -11,5 +11,6 @@ namespace QuanLyHocSinh.Services.Interface
         Task<Account> GetUser(string email, string password);
         Task<Account> GetByUserName(string userName);
         Task<(Student, Teacher)> GetUserOrTeacher(Guid Id);
+        Task<string> ChangePassword(Guid Id, string oldPass, string newPass);
     }
 }

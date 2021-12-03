@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QuanLyHocSinhClient.Models;
 
 namespace QuanLyHocSinh.Models
 {
@@ -11,20 +12,24 @@ namespace QuanLyHocSinh.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public Boolean Sex { get; set; }
+        public DateTime? Birthday { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Image { get; set; }
         public int SubjectId { get; set; }
         public string CMND { get; set; }
         public string PlaceOfIssue { get; set; }
+        public DateTime? DateOfIssue { get; set; }
         public string Nationality { get; set; }
         public string Folk { get; set; }
         public string Religion { get; set; }
         public virtual Subject SubjectNavigation { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<Homework> Homeworks { get; set; }
         public Teacher()
         {
             Classes = new HashSet<Class>();
+            Homeworks = new HashSet<Homework>();
         }
     }
 }

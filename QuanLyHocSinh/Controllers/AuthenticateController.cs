@@ -125,6 +125,17 @@ namespace QuanLyHocSinh.Controllers
 
             return studentOrTeacher;
         }
+
+        [HttpGet("Id")]
+        public async Task<ActionResult<string>> ChangeStudent(Guid Id, string oldPass, string newPass)
+        {
+            if (String.IsNullOrEmpty(oldPass) || string.IsNullOrEmpty(newPass))
+            {
+                return "Không được để trống";
+            }
+
+            return await _loginRepository.ChangePassword(Id, oldPass, newPass);
+        }
         #endregion
 
     }

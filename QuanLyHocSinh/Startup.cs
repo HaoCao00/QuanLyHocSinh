@@ -111,6 +111,8 @@ namespace QuanLyHocSinh
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<INewsFeedRepository, NewsFeedRepository>();
             services.AddScoped<ILoginRepository, LoginRepository>();
+            services.AddScoped<IHomeworkRepository, HomeworkRepository>();
+            services.AddScoped<IHomeworkSubmitRepository, HomeworkSubmitRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
