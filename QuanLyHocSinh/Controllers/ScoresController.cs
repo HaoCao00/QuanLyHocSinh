@@ -43,6 +43,19 @@ namespace QuanLyHocSinh.Controllers
             return score;
         }
 
+        [HttpGet("UpdateScore/{studentID}_{semesterId}_{subjectId}_{diem15p}_{diem60p}_{diemHK}_{diemMieng}")]
+        public async Task<ActionResult> UpdateScore(Guid studentID,int semesterId,int subjectId, double diem15p, double diem60p, double diemHK, double diemMieng)
+        {
+            //if (studenID ==null|| semesterId == null || subjectId == null || diem15p == null || diem60p == null || diemHK == null || diemMieng)
+            //{
+            //    return NotFound();
+            //}
+            await _scoreRepository.UpdateScoreByStudentId(studentID, semesterId, subjectId, diem15p, diem60p, diemHK,
+                diemMieng);
+
+            return Ok("OK");
+        }
+
         [HttpGet("ScoresByStudentAndSemester/{studentId}/{semesterId}")]
         public async Task<ActionResult<List<Score>>> GetScore(Guid studentId, int semesterId)
         {
@@ -78,6 +91,26 @@ namespace QuanLyHocSinh.Controllers
             return NoContent();
         }
 
+        [HttpPut("UpdateScores")]
+        public async Task<IActionResult> UpdateScores(List<Score> scores)
+        {
+            if (scores == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _scoreRepository.UpdateScore(scores);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Scores
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -93,6 +126,20 @@ namespace QuanLyHocSinh.Controllers
             }
 
             return CreatedAtAction("GetScore", new { id = score.SemesterId }, score);
+        }
+        [HttpGet("InitScore/{studentId}/{semesterId}")]
+        public async Task<ActionResult<Score>> InitScore(Guid studentId,int semesterId)
+        {
+            try
+            {
+                await _scoreRepository.InitScores(studentId, semesterId);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message.ToString());
+            }
+
+            return NoContent();
         }
 
         // DELETE: api/Scores/5

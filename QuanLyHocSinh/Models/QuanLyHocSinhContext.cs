@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QuanLyHocSinhClient.Models;
 
 namespace QuanLyHocSinh.Models
 {
@@ -21,6 +22,8 @@ namespace QuanLyHocSinh.Models
         public DbSet<Comment> Comments { get; set; }
         public DbSet<NewsFeed> NewsFeeds { get; set; }
         public  DbSet<Account>  Accounts { get; set; }
+        public  DbSet<Homework>  Homework { get; set; }
+        public  DbSet<HomeworkSubmit>  HomeworkSubmit { get; set; }
         public QuanLyHocSinhContext(DbContextOptions<QuanLyHocSinhContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -154,7 +157,34 @@ namespace QuanLyHocSinh.Models
             modelBuilder.Entity<Account>(e =>
             {
                 e.HasKey(e => e.Id);  
-            }); 
+            });
+
+            modelBuilder.Entity<HomeworkSubmit>(e =>
+            {
+                e.HasKey(e => new { e.HomeworkId, e.StudentId, e.CreatedAt });
+                e.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                e.HasOne(c => c.HomeworkNavigation)
+                    .WithMany(c => c.HomeworkSubmits)
+                    .HasForeignKey(e => e.HomeworkId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("fk_homework_submit");
+                e.HasOne(c => c.StudentNavigation)
+                    .WithMany(c => c.HomeworkSubmits)
+                    .HasForeignKey(e => e.StudentId)
+                    .HasConstraintName("fk_homework_student");
+
+            });
+
+            modelBuilder.Entity<Homework>(e =>
+            {
+                e.HasKey(e => e.Id);
+                e.Property(e => e.CreateAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                e.HasOne(c => c.TeacherNavigation)
+                    .WithMany(c => c.Homeworks)
+                    .HasForeignKey(e => e.TeacherId)
+                    .HasConstraintName("fk_homework_teacher"); 
+
+            });
 
             base.OnModelCreating(modelBuilder);
         }

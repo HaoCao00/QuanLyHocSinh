@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Threading.Tasks;
+using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using QuanLyHocSinh.Models;
+using MailKit.Net.Smtp;
 using QuanLyHocSinh.Services.Interface;
 
 namespace QuanLyHocSinh.Services
@@ -36,6 +39,50 @@ namespace QuanLyHocSinh.Services
             var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == Id);
 
             return (student, teacher);
+        }
+
+        public async Task<string> ChangePassword(Guid Id, string oldPass, string newPass)
+        {
+            var context = _contextFactory.CreateDbContext();
+            var std = await context.Accounts.FirstOrDefaultAsync(x => x.Password == oldPass && x.Id == Id);
+            if (std == null)
+            {
+                return "Password Incorect";
+            }
+
+            std.Password = newPass;
+            context.Accounts.Update(std);
+            await context.SaveChangesAsync();
+
+            var student = await context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+            var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == Id);
+            string name = student!=null?student.Name:teacher.Name;
+            string mail = student != null ? student.Email : teacher.Email;
+
+            
+            SendMail(name, mail);
+            return "Change Success";
+        }
+        void SendMail(string name, string email)
+        {
+            MimeMessage message = new MimeMessage();
+            using (var client = new SmtpClient())
+            {
+                message.From.Add(new MailboxAddress("Thông báo", "ntanh.hutech@gmail.com"));
+                message.To.Add(new MailboxAddress(name, email));
+                message.Subject = "PASSWORD CHANGED";
+
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p>Your password has been changed on " + DateTime.UtcNow.AddHours(7).ToString("dddd, MMMM d, yyyy hh:mm:ss") + "</p>";
+                message.Body = bodyBuilder.ToMessageBody();
+
+                client.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
+
+                client.Authenticate("ntanh.hutech@gmail.com", "olmwycchdvjacger");
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
         }
     }
 }

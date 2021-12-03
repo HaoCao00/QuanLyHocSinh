@@ -16,25 +16,25 @@ namespace QuanLyHocSinh.Controllers
     [ApiController] 
     public class ClasssController : BaseController
     {
-        private readonly IClassRepository _ClassRepository;
+        private readonly IClassRepository _classRepository;
 
-        public ClasssController(IClassRepository ClassRepository)
+        public ClasssController(IClassRepository classRepository)
         {
-            _ClassRepository = ClassRepository;
+            _classRepository = classRepository;
         }
 
         // GET: api/Classs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Class>>> GetClasss()
         {
-            return await _ClassRepository.GetAllAsync();
+            return await _classRepository.GetAllAsync();
         }
 
         // GET: api/Classs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Class>> GetClass(int id)
         {
-            var Class = await _ClassRepository.GetByIdAsync(id);
+            var Class = await _classRepository.GetByIdAsync(id);
 
             if (Class == null)
             {
@@ -56,7 +56,7 @@ namespace QuanLyHocSinh.Controllers
 
             try
             {
-                await _ClassRepository.UpdateAsync(Class);
+                await _classRepository.UpdateAsync(Class);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +71,7 @@ namespace QuanLyHocSinh.Controllers
         [HttpPost]
         public async Task<ActionResult<Class>> PostClass(Class Class)
         {
-            await _ClassRepository.AddAsync(Class);
+            await _classRepository.AddAsync(Class);
 
             return CreatedAtAction("GetClass", new { id = Class.Id }, Class);
         }
@@ -80,7 +80,7 @@ namespace QuanLyHocSinh.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClass(int id)
         {
-            await _ClassRepository.DeleteAsync(id);
+            await _classRepository.DeleteAsync(id);
 
             return NoContent();
         }

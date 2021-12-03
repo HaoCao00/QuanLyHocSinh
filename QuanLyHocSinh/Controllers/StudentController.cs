@@ -94,6 +94,15 @@ namespace QuanLyHocSinh.Controllers
             return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
 
+        [HttpPost]
+        [Route("addRange")]
+        public async Task<ActionResult<List<Student>>> AddRangeStudent(List<Student> students)
+        {
+            await _studentRepository.AddStudentRange(students);
+
+            return students;
+        }
+
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
