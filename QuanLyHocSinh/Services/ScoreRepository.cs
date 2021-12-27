@@ -1,18 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-//using QuanLyHocSinh.Data;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Services
 {
     public class ScoreRepository : BaseRepository<Score>, IScoreRepository
     {
-        private IDbContextFactory<QuanLyHocSinhContext> _contextFactory;
+        private readonly IDbContextFactory<QuanLyHocSinhContext> _contextFactory;
         public ScoreRepository(IDbContextFactory<QuanLyHocSinhContext> context) : base(context)
         {
             _contextFactory = context;
@@ -43,23 +41,23 @@ namespace QuanLyHocSinh.Services
         public async Task UpdateScoreByStudentId(Guid studentId,int semesterId,int subjectId, double diem15, double diem60, double diemhk, double diemMieng)
         {
             var context = _contextFactory.CreateDbContext();
-            var _diem15p = await context.Scores.FirstOrDefaultAsync(x =>
+            var diem15P = await context.Scores.FirstOrDefaultAsync(x =>
                 x.StudentId == studentId && x.SemesterId == semesterId && x.SubjectId == subjectId &&
                 x.TestTypeId == 2);
-            _diem15p.Point = diem15;
-            var _diem60p = await context.Scores.FirstOrDefaultAsync(x =>
+            diem15P.Point = diem15;
+            var diem60P = await context.Scores.FirstOrDefaultAsync(x =>
                 x.StudentId == studentId && x.SemesterId == semesterId && x.SubjectId == subjectId &&
                 x.TestTypeId == 3);
-            _diem60p.Point = diem60;
-            var _diemHK = await context.Scores.FirstOrDefaultAsync(x =>
+            diem60P.Point = diem60;
+            var diemHk = await context.Scores.FirstOrDefaultAsync(x =>
                 x.StudentId == studentId && x.SemesterId == semesterId && x.SubjectId == subjectId &&
                 x.TestTypeId == 4);
-            _diemHK.Point = diemhk;
-            var _diemMieng = await context.Scores.FirstOrDefaultAsync(x =>
+            diemHk.Point = diemhk;
+            var diemM = await context.Scores.FirstOrDefaultAsync(x =>
                 x.StudentId == studentId && x.SemesterId == semesterId && x.SubjectId == subjectId &&
                 x.TestTypeId == 5);
-            _diemMieng.Point = diemMieng;
-            context.Scores.UpdateRange(new []{ _diem15p , _diem60p , _diemHK , _diemMieng });
+            diemM.Point = diemMieng;
+            context.Scores.UpdateRange(new []{ diem15P , diem60P , diemHk , diemM });
         }
 
         public async Task UpdateScore(List<Score> scores)
@@ -69,7 +67,7 @@ namespace QuanLyHocSinh.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task InitScores(Guid studentId, int SemesterId)
+        public async Task InitScores(Guid studentId, int semesterId)
         {
             var context = _contextFactory.CreateDbContext();
             List<Score> list = new List<Score>();
@@ -80,14 +78,14 @@ namespace QuanLyHocSinh.Services
                 foreach (var tt in testType)
                 {
                     var point = context.Scores.FirstOrDefault(x =>
-                        x.StudentId == studentId && x.SemesterId == SemesterId && x.TestTypeId == tt.Id &&
+                        x.StudentId == studentId && x.SemesterId == semesterId && x.TestTypeId == tt.Id &&
                         sb.Id == x.SubjectId);
                     if (point == null)
                     {
                         Score score = new Score()
                         {
                             StudentId = studentId,
-                            SemesterId = SemesterId,
+                            SemesterId = semesterId,
                             TestTypeId = tt.Id,
                             SubjectId = sb.Id,
                             Point = -1

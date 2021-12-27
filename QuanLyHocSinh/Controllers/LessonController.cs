@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Controllers
@@ -13,47 +11,47 @@ namespace QuanLyHocSinh.Controllers
     [ApiController]
     public class LessonsController : BaseController
     {
-        private readonly ILessonRepository _LessonRepository;
+        private readonly ILessonRepository _lessonRepository;
 
-        public LessonsController(ILessonRepository LessonRepository)
+        public LessonsController(ILessonRepository lessonRepository)
         {
-            _LessonRepository = LessonRepository;
+            _lessonRepository = lessonRepository;
         }
 
         // GET: api/Lessons
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lesson>>> GetLessons()
         {
-            return await _LessonRepository.GetAllAsync();
+            return await _lessonRepository.GetAllAsync();
         }
 
         // GET: api/Lessons/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lesson>> GetLesson(int id)
         {
-            var Lesson = await _LessonRepository.GetByIdAsync(id);
+            var lesson = await _lessonRepository.GetByIdAsync(id);
 
-            if (Lesson == null)
+            if (lesson == null)
             {
                 return NotFound();
             }
 
-            return Lesson;
+            return lesson;
         }
 
         // PUT: api/Lessons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLesson(int id, Lesson Lesson)
+        public async Task<IActionResult> PutLesson(int id, Lesson lesson)
         {
-            if (id != Lesson.Id)
+            if (id != lesson.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _LessonRepository.UpdateAsync(Lesson);
+                await _lessonRepository.UpdateAsync(lesson);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -66,18 +64,18 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Lesson>> PostLesson(Lesson Lesson)
+        public async Task<ActionResult<Lesson>> PostLesson(Lesson lesson)
         {
-            await _LessonRepository.AddAsync(Lesson);
+            await _lessonRepository.AddAsync(lesson);
 
-            return CreatedAtAction("GetLesson", new { id = Lesson.Id }, Lesson);
+            return CreatedAtAction("GetLesson", new { id = lesson.Id }, lesson);
         }
 
         // DELETE: api/Lessons/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLesson(int id)
         {
-            await _LessonRepository.DeleteAsync(id);
+            await _lessonRepository.DeleteAsync(id);
 
             return NoContent();
         }

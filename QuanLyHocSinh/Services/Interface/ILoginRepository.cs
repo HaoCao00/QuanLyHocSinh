@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using QuanLyHocSinh.Models;
 
@@ -10,7 +8,7 @@ namespace QuanLyHocSinh.Services.Interface
     {
         Task<Account> GetUser(string email, string password);
         Task<Account> GetByUserName(string userName);
-        Task<(Student, Teacher)> GetUserOrTeacher(Guid Id);
-        Task<string> ChangePassword(Guid Id, string oldPass, string newPass);
+        Task<(Student, Teacher)> GetUserOrTeacher(Guid id);
+        Task<string> ChangePassword(Guid id, string oldPass, string newPass);
     }
 }

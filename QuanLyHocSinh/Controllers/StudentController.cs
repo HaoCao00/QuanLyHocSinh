@@ -4,7 +4,6 @@ using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,42 +35,42 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
-            var Student = await _studentRepository.GetByIdAsync(id);
+            var student = await _studentRepository.GetByIdAsync(id);
 
-            if (Student == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return Student;
+            return student;
         }
          
         [HttpGet("studentByClassId/{classId}")]
         public async Task<ActionResult<List<Student>>> GetStudentByClassId(int classId)
         {
-            var Students = await _studentRepository.GetStudentByClassId(classId);
+            var students = await _studentRepository.GetStudentByClassId(classId);
 
-            if (Students == null)
+            if (students == null)
             {
                 return NotFound();
             }
 
-            return Students;
+            return students;
         }
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(Guid id, Student Student)
+        public async Task<IActionResult> PutStudent(Guid id, Student student)
         {
-            if (id != Student.Id)
+            if (id != student.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _studentRepository.UpdateAsync(Student);
+                await _studentRepository.UpdateAsync(student);
             }
             catch (DbUpdateConcurrencyException)
             {

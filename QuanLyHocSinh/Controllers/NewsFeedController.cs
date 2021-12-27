@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
@@ -27,7 +25,7 @@ namespace QuanLyHocSinh.Controllers
         {
             try
             {
-                var kq = await _newsFeedRepository.GetAllAsync();
+                await _newsFeedRepository.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -40,29 +38,29 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NewsFeed>> GetNewsFeed(int id)
         {
-            var NewsFeed = await _newsFeedRepository.GetByIdAsync(id);
+            var newsFeed = await _newsFeedRepository.GetByIdAsync(id);
 
-            if (NewsFeed == null)
+            if (newsFeed == null)
             {
                 return NotFound();
             }
 
-            return NewsFeed;
+            return newsFeed;
         }
 
         // PUT: api/NewsFeeds/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNewsFeed(int id, NewsFeed NewsFeed)
+        public async Task<IActionResult> PutNewsFeed(int id, NewsFeed newsFeed)
         {
-            if (id != NewsFeed.Id)
+            if (id != newsFeed.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _newsFeedRepository.UpdateAsync(NewsFeed);
+                await _newsFeedRepository.UpdateAsync(newsFeed);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,11 +73,11 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/NewsFeeds
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NewsFeed>> PostNewsFeed(NewsFeed NewsFeed)
+        public async Task<ActionResult<NewsFeed>> PostNewsFeed(NewsFeed newsFeed)
         {
-            await _newsFeedRepository.AddAsync(NewsFeed);
+            await _newsFeedRepository.AddAsync(newsFeed);
 
-            return CreatedAtAction("GetNewsFeed", new { id = NewsFeed.Id }, NewsFeed);
+            return CreatedAtAction("GetNewsFeed", new { id = newsFeed.Id }, newsFeed);
         }
 
         // DELETE: api/NewsFeeds/5

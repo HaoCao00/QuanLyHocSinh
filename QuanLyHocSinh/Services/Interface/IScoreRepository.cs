@@ -1,7 +1,6 @@
 ﻿using QuanLyHocSinh.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Services.Interface
@@ -14,6 +13,6 @@ namespace QuanLyHocSinh.Services.Interface
             double diemhk, double diemMieng);
 
         Task UpdateScore(List<Score> scores);
-        Task InitScores(Guid studentId, int SemesterId);
+        Task InitScores(Guid studentId, int semesterId);
     }
 }

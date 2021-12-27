@@ -4,7 +4,6 @@ using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,13 +14,13 @@ namespace QuanLyHocSinh.Controllers
     [ApiController]
     public class TeachersController : BaseController
     {
-        private readonly ITeacherRepository _TeacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
 
         private readonly ILoginRepository _loginRepository;
 
-        public TeachersController(ITeacherRepository TeacherRepository, ILoginRepository loginRepository)
+        public TeachersController(ITeacherRepository teacherRepository, ILoginRepository loginRepository)
         {
-            _TeacherRepository = TeacherRepository;
+            _teacherRepository = teacherRepository;
             _loginRepository = loginRepository;
         }
 
@@ -29,36 +28,36 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers()
         {
-            return await _TeacherRepository.GetAllAsync();
+            return await _teacherRepository.GetAllAsync();
         }
 
         // GET: api/Teachers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Teacher>> GetTeacher(int id)
         {
-            var Teacher = await _TeacherRepository.GetByIdAsync(id);
+            var teacher = await _teacherRepository.GetByIdAsync(id);
 
-            if (Teacher == null)
+            if (teacher == null)
             {
                 return NotFound();
             }
 
-            return Teacher;
+            return teacher;
         }
 
         // PUT: api/Teachers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeacher(Guid id, Teacher Teacher)
+        public async Task<IActionResult> PutTeacher(Guid id, Teacher teacher)
         {
-            if (id != Teacher.Id)
+            if (id != teacher.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _TeacherRepository.UpdateAsync(Teacher);
+                await _teacherRepository.UpdateAsync(teacher);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,7 +75,7 @@ namespace QuanLyHocSinh.Controllers
             var account = await _loginRepository.AddAsync(new Account()
                 {UserName = username, Password = password, Role = "teacher"});
             teacher.Id = account.Id;
-            await _TeacherRepository.AddAsync(teacher);
+            await _teacherRepository.AddAsync(teacher);
 
             return CreatedAtAction("GetTeacher", new { id = teacher.Id }, teacher);
         }
@@ -85,7 +84,7 @@ namespace QuanLyHocSinh.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(int id)
         {
-            await _TeacherRepository.DeleteAsync(id);
+            await _teacherRepository.DeleteAsync(id);
 
             return NoContent();
         }

@@ -38,11 +38,11 @@ namespace QuanLyHocSinh.Services
             return entities;
         }
 
-        public async Task DeleteAsync(Object Id)
+        public async Task DeleteAsync(Object id)
         {
             var context = _contextFactory.CreateDbContext();
             _dbset = context.Set<T>();
-            var entity = _dbset.Find(Id);
+            var entity = _dbset.Find(id);
             _dbset.Remove(entity);
             await context.SaveChangesAsync();
         }
@@ -51,7 +51,7 @@ namespace QuanLyHocSinh.Services
         {
             var context = _contextFactory.CreateDbContext();
             _dbset = context.Set<T>();
-            return await _dbset.ToListAsync(); ;
+            return await _dbset.ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(object id)
@@ -71,8 +71,8 @@ namespace QuanLyHocSinh.Services
         }
         public async Task<List<T>> GetFilterAsync(Expression<Func<T, bool>> filter)
         {
-            var _context = _contextFactory.CreateDbContext();
-            _dbset = _context.Set<T>();
+            var context = _contextFactory.CreateDbContext();
+            _dbset = context.Set<T>();
             return await _dbset.Where(filter).ToListAsync();
         }
     }

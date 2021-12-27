@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-//using QuanLyHocSinh.Data;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 
@@ -43,14 +40,14 @@ namespace QuanLyHocSinh.Controllers
             return score;
         }
 
-        [HttpGet("UpdateScore/{studentID}_{semesterId}_{subjectId}_{diem15p}_{diem60p}_{diemHK}_{diemMieng}")]
-        public async Task<ActionResult> UpdateScore(Guid studentID,int semesterId,int subjectId, double diem15p, double diem60p, double diemHK, double diemMieng)
+        [HttpGet("UpdateScore/{studentId}_{semesterId}_{subjectId}_{diem15P}_{diem60P}_{diemHk}_{diemMieng}")]
+        public async Task<ActionResult> UpdateScore(Guid studentId,int semesterId,int subjectId, double diem15P, double diem60P, double diemHk, double diemMieng)
         {
             //if (studenID ==null|| semesterId == null || subjectId == null || diem15p == null || diem60p == null || diemHK == null || diemMieng)
             //{
             //    return NotFound();
             //}
-            await _scoreRepository.UpdateScoreByStudentId(studentID, semesterId, subjectId, diem15p, diem60p, diemHK,
+            await _scoreRepository.UpdateScoreByStudentId(studentId, semesterId, subjectId, diem15P, diem60P, diemHk,
                 diemMieng);
 
             return Ok("OK");
@@ -136,7 +133,7 @@ namespace QuanLyHocSinh.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(ex.Message.ToString());
+                return Ok(ex.Message);
             }
 
             return NoContent();

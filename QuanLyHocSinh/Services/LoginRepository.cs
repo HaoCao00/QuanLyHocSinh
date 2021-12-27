@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq; 
 using System.Threading.Tasks;
 using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
@@ -32,19 +30,19 @@ namespace QuanLyHocSinh.Services
           
         }
 
-        public async Task<(Student, Teacher)> GetUserOrTeacher(Guid Id)
+        public async Task<(Student, Teacher)> GetUserOrTeacher(Guid id)
         {
             var context = _contextFactory.CreateDbContext(); 
-            var student =await context.Students.FirstOrDefaultAsync(x=>x.Id== Id);
-            var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == Id);
+            var student =await context.Students.FirstOrDefaultAsync(x=>x.Id== id);
+            var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == id);
 
             return (student, teacher);
         }
 
-        public async Task<string> ChangePassword(Guid Id, string oldPass, string newPass)
+        public async Task<string> ChangePassword(Guid id, string oldPass, string newPass)
         {
             var context = _contextFactory.CreateDbContext();
-            var std = await context.Accounts.FirstOrDefaultAsync(x => x.Password == oldPass && x.Id == Id);
+            var std = await context.Accounts.FirstOrDefaultAsync(x => x.Password == oldPass && x.Id == id);
             if (std == null)
             {
                 return "Password Incorect";
@@ -54,8 +52,8 @@ namespace QuanLyHocSinh.Services
             context.Accounts.Update(std);
             await context.SaveChangesAsync();
 
-            var student = await context.Students.FirstOrDefaultAsync(x => x.Id == Id);
-            var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == Id);
+            var student = await context.Students.FirstOrDefaultAsync(x => x.Id == id);
+            var teacher = await context.Teachers.FirstOrDefaultAsync(x => x.Id == id);
             string name = student!=null?student.Name:teacher.Name;
             string mail = student != null ? student.Email : teacher.Email;
 

@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
-using QuanLyHocSinh.Services;
 using QuanLyHocSinh.Services.Interface;
 
 namespace QuanLyHocSinh.Controllers
@@ -33,14 +29,14 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Comment>> GetComment(int id)
         {
-            var Comment = await _commentRepository.GetByIdAsync(id);
+            var comment = await _commentRepository.GetByIdAsync(id);
 
-            if (Comment == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return Comment;
+            return comment;
         }
 
         [HttpGet("ByNewsFeedId/{newsFeedId}")]
@@ -59,16 +55,16 @@ namespace QuanLyHocSinh.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment Comment)
+        public async Task<IActionResult> PutComment(int id, Comment comment)
         {
-            if (id != Comment.NewsFeedId)
+            if (id != comment.NewsFeedId)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _commentRepository.UpdateAsync(Comment);
+                await _commentRepository.UpdateAsync(comment);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,11 +77,11 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment Comment)
+        public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
-            await _commentRepository.AddAsync(Comment);
+            await _commentRepository.AddAsync(comment);
 
-            return CreatedAtAction("GetComment", new { id = Comment.NewsFeedId }, Comment);
+            return CreatedAtAction("GetComment", new { id = comment.NewsFeedId }, comment);
         }
 
         // DELETE: api/Comments/5

@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,73 +13,73 @@ namespace QuanLyHocSinh.Controllers
     [ApiController]
     public class ScheduleDetailsController : BaseController
     {
-        private readonly IScheduleDetailRepository _ScheduleDetailRepository;
+        private readonly IScheduleDetailRepository _scheduleDetailRepository;
 
-        public ScheduleDetailsController(IScheduleDetailRepository ScheduleDetailRepository)
+        public ScheduleDetailsController(IScheduleDetailRepository scheduleDetailRepository)
         {
-            _ScheduleDetailRepository = ScheduleDetailRepository;
+            _scheduleDetailRepository = scheduleDetailRepository;
         }
 
         // GET: api/ScheduleDetails
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ScheduleDetail>>> GetScheduleDetails()
         {
-            return await _ScheduleDetailRepository.GetAllAsync();
+            return await _scheduleDetailRepository.GetAllAsync();
         }
 
         // GET: api/ScheduleDetails/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ScheduleDetail>> GetScheduleDetail(int id)
         {
-            var ScheduleDetail = await _ScheduleDetailRepository.GetByIdAsync(id);
+            var scheduleDetail = await _scheduleDetailRepository.GetByIdAsync(id);
 
-            if (ScheduleDetail == null)
+            if (scheduleDetail == null)
             {
                 return NotFound();
             }
 
-            return ScheduleDetail;
+            return scheduleDetail;
         }
 
         [HttpGet("ScheduleByClassId/{classid}")]
         public async Task<ActionResult<List<ScheduleDetail>>> GetScheduleByClassId(int classid)
         {
-            var ScheduleDetail = await _ScheduleDetailRepository.GetScheduleByClassId(classid);
+            var scheduleDetail = await _scheduleDetailRepository.GetScheduleByClassId(classid);
 
-            if (ScheduleDetail == null)
+            if (scheduleDetail == null)
             {
                 return NotFound();
             }
 
-            return ScheduleDetail;
+            return scheduleDetail;
         }
 
         [HttpGet("scheduleDetailByDate/{studyDate}")]
         public async Task<ActionResult<List<ScheduleDetail>>> GetScheduleByClassId(string studyDate)
         {
-            var ScheduleDetail = await _ScheduleDetailRepository.GetScheduleByDate(studyDate);
+            var scheduleDetail = await _scheduleDetailRepository.GetScheduleByDate(studyDate);
 
-            if (ScheduleDetail == null)
+            if (scheduleDetail == null)
             {
                 return NotFound();
             }
 
-            return ScheduleDetail;
+            return scheduleDetail;
         }
 
         // PUT: api/ScheduleDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutScheduleDetail(int id, ScheduleDetail ScheduleDetail)
+        public async Task<IActionResult> PutScheduleDetail(int id, ScheduleDetail scheduleDetail)
         {
-            if (id != ScheduleDetail.ScheduleId)
+            if (id != scheduleDetail.ScheduleId)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _ScheduleDetailRepository.UpdateAsync(ScheduleDetail);
+                await _scheduleDetailRepository.UpdateAsync(scheduleDetail);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,18 +92,18 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/ScheduleDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ScheduleDetail>> PostScheduleDetail(ScheduleDetail ScheduleDetail)
+        public async Task<ActionResult<ScheduleDetail>> PostScheduleDetail(ScheduleDetail scheduleDetail)
         {
             try
             {
-                await _ScheduleDetailRepository.AddAsync(ScheduleDetail);
+                await _scheduleDetailRepository.AddAsync(scheduleDetail);
             }
             catch (DbUpdateException)
             {
                 return Conflict();
             }
 
-            return CreatedAtAction("GetScheduleDetail", new { id = ScheduleDetail.ScheduleId }, ScheduleDetail);
+            return CreatedAtAction("GetScheduleDetail", new { id = scheduleDetail.ScheduleId }, scheduleDetail);
 
         }
 
@@ -113,7 +111,7 @@ namespace QuanLyHocSinh.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteScheduleDetail(int id)
         {
-            await _ScheduleDetailRepository.DeleteAsync(id);
+            await _scheduleDetailRepository.DeleteAsync(id);
 
             return NoContent();
         }

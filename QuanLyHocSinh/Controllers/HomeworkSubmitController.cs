@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using QuanLyHocSinh.Models;
-using QuanLyHocSinh.Services;
 using QuanLyHocSinh.Services.Interface;
 using QuanLyHocSinhClient.Models;
 
@@ -34,27 +29,27 @@ namespace QuanLyHocSinh.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<HomeworkSubmit>> GetHomeworkSubmit(int id)
         {
-            var HomeworkSubmit = await _homeworkSubmitRepository.GetByIdAsync(id);
+            var homeworkSubmit = await _homeworkSubmitRepository.GetByIdAsync(id);
 
-            if (HomeworkSubmit == null)
+            if (homeworkSubmit == null)
             {
                 return NotFound();
             }
 
-            return HomeworkSubmit;
+            return homeworkSubmit;
         }
 
         [HttpGet("ByHomeworkId/{homeworkId}")]
         public async Task<ActionResult<List<HomeworkSubmit>>> GetByNewsFeedId(int homeworkId)
         {
-            var HomeworkSubmits = await _homeworkSubmitRepository.GetByHomework(homeworkId);
+            var homeworkSubmits = await _homeworkSubmitRepository.GetByHomework(homeworkId);
 
-            if (HomeworkSubmits == null)
+            if (homeworkSubmits == null)
             {
                 return NotFound();
             }
 
-            return HomeworkSubmits;
+            return homeworkSubmits;
         }
 
         // PUT: api/HomeworkSubmits/5

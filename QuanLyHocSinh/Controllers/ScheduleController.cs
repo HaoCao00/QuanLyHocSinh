@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuanLyHocSinh.Controllers
@@ -13,47 +11,47 @@ namespace QuanLyHocSinh.Controllers
     [ApiController]
     public class SchedulesController : BaseController
     {
-        private readonly IScheduleRepository _ScheduleRepository;
+        private readonly IScheduleRepository _scheduleRepository;
 
-        public SchedulesController(IScheduleRepository ScheduleRepository)
+        public SchedulesController(IScheduleRepository scheduleRepository)
         {
-            _ScheduleRepository = ScheduleRepository;
+            _scheduleRepository = scheduleRepository;
         }
 
         // GET: api/Schedules
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
         {
-            return await _ScheduleRepository.GetAllAsync();
+            return await _scheduleRepository.GetAllAsync();
         }
 
         // GET: api/Schedules/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Schedule>> GetSchedule(int id)
         {
-            var Schedule = await _ScheduleRepository.GetByIdAsync(id);
+            var schedule = await _scheduleRepository.GetByIdAsync(id);
 
-            if (Schedule == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return Schedule;
+            return schedule;
         }
 
         // PUT: api/Schedules/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchedule(int id, Schedule Schedule)
+        public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
         {
-            if (id != Schedule.Id)
+            if (id != schedule.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _ScheduleRepository.UpdateAsync(Schedule);
+                await _scheduleRepository.UpdateAsync(schedule);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -66,18 +64,18 @@ namespace QuanLyHocSinh.Controllers
         // POST: api/Schedules
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Schedule>> PostSchedule(Schedule Schedule)
+        public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
         {
-            await _ScheduleRepository.AddAsync(Schedule);
+            await _scheduleRepository.AddAsync(schedule);
 
-            return CreatedAtAction("GetSchedule", new { id = Schedule.Id }, Schedule);
+            return CreatedAtAction("GetSchedule", new { id = schedule.Id }, schedule);
         }
 
         // DELETE: api/Schedules/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSchedule(int id)
         {
-            await _ScheduleRepository.DeleteAsync(id);
+            await _scheduleRepository.DeleteAsync(id);
 
             return NoContent();
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq; 
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using QuanLyHocSinh.Controllers;
 using QuanLyHocSinh.Models;
 using QuanLyHocSinh.Services.Interface;
 
@@ -19,10 +16,10 @@ namespace QuanLyHocSinh.Controllers
     public class AuthenticateController : BaseController
     {
         #region Property
+
         /// <summary>
         /// Property Declaration
         /// </summary>
-        /// <param name="data"></param>
         /// <returns></returns>
         private IConfiguration _config;
 
@@ -42,12 +39,12 @@ namespace QuanLyHocSinh.Controllers
         #endregion
 
         #region GenerateJWT
+
         /// <summary>
         /// Generate Json Web Token Method
         /// </summary>
-        /// <param name="userInfo"></param>
         /// <returns></returns>
-        private string GenerateJSONWebToken(Account userInfo)
+        private string GenerateJsonWebToken()
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -74,11 +71,11 @@ namespace QuanLyHocSinh.Controllers
         {
             if (data != null && data.UserName != null && data.Password != null)
             {
-                IActionResult response = Unauthorized();
+                IActionResult response;
                 var user = await _loginRepository.GetUser(data.UserName, data.Password);
                 if (user != null)
                 {
-                    var tokenString = GenerateJSONWebToken(user);
+                    var tokenString = GenerateJsonWebToken();
                     response = Ok(tokenString);
                     return response;
                 }
@@ -104,7 +101,7 @@ namespace QuanLyHocSinh.Controllers
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            return new string[] { accessToken };
+            return new[] { accessToken };
         }
 
         [HttpGet("{username}")]
@@ -127,14 +124,14 @@ namespace QuanLyHocSinh.Controllers
         }
 
         [HttpGet("Id")]
-        public async Task<ActionResult<string>> ChangeStudent(Guid Id, string oldPass, string newPass)
+        public async Task<ActionResult<string>> ChangeStudent(Guid id, string oldPass, string newPass)
         {
             if (String.IsNullOrEmpty(oldPass) || string.IsNullOrEmpty(newPass))
             {
                 return "Không được để trống";
             }
 
-            return await _loginRepository.ChangePassword(Id, oldPass, newPass);
+            return await _loginRepository.ChangePassword(id, oldPass, newPass);
         }
         #endregion
 
